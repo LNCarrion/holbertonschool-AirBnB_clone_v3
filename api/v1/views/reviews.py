@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""This is the review controls"""
 from flask import Flask, Blueprint, jsonify, abort, request
 from models import storage
 from models.place import Place
@@ -10,6 +12,18 @@ places_reviews_api = Blueprint('places_reviews_api', __name__)
 
 @places_reviews_api.route('/api/v1/places/<place_id>/reviews', methods=['GET'])
 def get_place_reviews(place_id):
+    """
+    Retrieve all reviews for a specific place.
+
+    Args:
+        place_id (str): The ID of the place.
+
+    Returns:
+        Flask Response: A JSON response containing the reviews for the place.
+
+    Raises:
+        404: If the place with the given ID does not exist.
+    """
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
@@ -19,6 +33,18 @@ def get_place_reviews(place_id):
 
 @places_reviews_api.route('/api/v1/reviews/<review_id>', methods=['GET'])
 def get_review(review_id):
+    """
+    Retrieve a specific review by its ID.
+
+    Args:
+        review_id (str): The ID of the review to retrieve.
+
+    Returns:
+        dict: A dictionary representation of the review.
+
+    Raises:
+        404: If the review with the specified ID does not exist.
+    """
     review = storage.get(Review, review_id)
     if not review:
         abort(404)
@@ -27,6 +53,18 @@ def get_review(review_id):
 
 @places_reviews_api.route('/api/v1/reviews/<review_id>', methods=['DELETE'])
 def delete_review(review_id):
+    """
+    Delete a review by its ID.
+
+    Args:
+        review_id (str): The ID of the review to be deleted.
+
+    Returns:
+        tuple: A tuple containing an empty JSON response and a status code of 200.
+
+    Raises:
+        404: If the review with the given ID does not exist.
+    """
     review = storage.get(Review, review_id)
     if not review:
         abort(404)
@@ -37,6 +75,20 @@ def delete_review(review_id):
 
 @places_reviews_api.route('/api/v1/places/<place_id>/reviews', methods=['POST'])
 def create_review(place_id):
+    """
+    Create a new review for a place.
+
+    Args:
+        place_id (str): The ID of the place.
+
+    Returns:
+        tuple: A tuple containing the JSON response and the HTTP status code.
+
+    Raises:
+        404: If the place with the given ID does not exist.
+        400: If the request is not in JSON format, or if the 'user_id' or 'text' fields are missing.
+
+    """
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
@@ -59,6 +111,19 @@ def create_review(place_id):
 
 @places_reviews_api.route('/api/v1/reviews/<review_id>', methods=['PUT'])
 def update_review(review_id):
+    """
+    Update a review by its ID.
+
+    Args:
+        review_id (str): The ID of the review to be updated.
+
+    Returns:
+        tuple: A tuple containing the JSON representation of the updated review and the HTTP status code.
+
+    Raises:
+        404: If the review with the given ID does not exist.
+        400: If the request data is not in JSON format.
+    """
     review = storage.get(Review, review_id)
     if not review:
         abort(404)
@@ -70,4 +135,3 @@ def update_review(review_id):
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
-

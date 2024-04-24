@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""This is the user handler"""
 from flask import Flask, Blueprint, jsonify, abort, request
 from models import storage
 from models.user import User
