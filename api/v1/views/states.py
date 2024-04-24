@@ -9,13 +9,10 @@ from api.v1.views import app_views
 def states():
     """
     Retrieves the list of all State objects or creates a new State object
-
     GET:
         Returns a JSON representation of all State objects
-
     POST:
         Creates a new State object based on the JSON body of the request
-
     Returns:
         JSON representation of the State object(s) or an error message
     """
@@ -37,19 +34,14 @@ def states():
 def state(state_id):
     """
     Retrieves, updates or deletes a State object based on its ID
-
     Args:
         state_id (str): The ID of the State object
-
     GET:
         Returns a JSON representation of the State object
-
     PUT:
         Updates the State object based on the JSON body of the request
-
     DELETE:
         Deletes the State object
-
     Returns:
         JSON representation of the State object or an error message
     """
